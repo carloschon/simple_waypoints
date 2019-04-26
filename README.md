@@ -19,3 +19,11 @@ A minetest 0.4.17+ mod that lets you set waypoints/beacons at current position.
 #### Installation
 
 Extract zip to the mods folder.
+
+#### TODO
+
+-The color of the beacons is chosem randomly on placement; I may tweak this in the future or remove it altogether.
+The HUD element is nice to have, though.
+
+-Implement some kind formspec GUI to make the mod easier to use. This will become more practical if and when the engine
+supports custom keybindings.
