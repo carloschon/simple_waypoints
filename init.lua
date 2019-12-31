@@ -1,10 +1,10 @@
+-------------- INIT VARIABLES ------------------
 local modstorage = minetest.get_mod_storage()
 local world_path = minetest.get_worldpath()
 local world_name = world_path:match( "([^/]+)$" )
 local waypoints = minetest.deserialize(modstorage:get_string(world_name)) or {}
 
-
--- HELPER FUNCTIONS
+--------------- HELPER FUNCTIONS ---------------
 local function save() -- dumps table to modstorage
   modstorage:set_string(world_name, minetest.serialize(waypoints))
 end
@@ -70,7 +70,7 @@ local function loadWaypointsHud(player, table)
   end
 end
 
---------------- INIT FUNCTIONS ------------------
+--------------- ON JOIN ------------------
 local join = minetest.register_on_joinplayer(function(player)
   minetest.after(.5, function()
     loadWaypointsHud(player, waypoints)
@@ -80,7 +80,7 @@ end)
 -------------- NODE DEFINITIONS -----------------
 local palette = {"blue", "green", "orange", "pink", "purple", "red", "white", "yellow"}
 
--- BEACONS
+-- BEACON DEFINITION
 for _, color in ipairs(palette) do
   minetest.register_node("simple_waypoints:"..color.."_beacon", {
 	visual_scale = 1.0,
@@ -94,7 +94,7 @@ for _, color in ipairs(palette) do
 })
 end
 
--- CONSTRUCTOR FUNCTIONS
+-- BEACON FUNCTIONS
 local function placeBeacon(pos)
   local random = math.random(1,#palette)
   for i=0,50 do
@@ -116,6 +116,7 @@ local function removeBeacon(pos)
     end
   end
 end
+
 --------------- CHAT COMMANDS -------------------
 
 -- CREATE WAYPOINT
@@ -195,3 +196,65 @@ minetest.register_chatcommand("wt", {
     end
   end
 })
+
+-- SHOW WAYPOINTS FORMSPEC
+minetest.register_chatcommand("wf", {
+    func = function(name)
+        waypoints_form.show_to(name)
+    end,
+})
+
+--------------- FORMSPEC -----------------------
+
+local selected
+waypoints_form = {}
+function waypoints_form.get_formspec(name)
+	local text = "Waypoints list"
+	
+	formspec = {
+		"size[11,14]",
+		"real_coordinates[true]",
+		"label[0.375,0.5;", minetest.formspec_escape(text), "]",
+		"button_exit[8.7,0.75;2,1;teleport;Teleport]",
+		"button[8.7,1.75;2,1;add;Add]",
+		"button[8.7,2.75;2,1;remove;Remove]",
+		"button[8.7,3.75;2,1;rename;Rename]",
+	}
+
+local f = ""
+	f = f..
+	"textlist[0.375,0.75;8,13;waylist"..";"
+	for i = 1, #waypoints do
+		f = f..i.."  "..minetest.formspec_escape(waypoints[i].name..""..waypoints[i].pos)..","
+	end
+	formspec[#formspec+1] = f
+
+return table.concat(formspec, " ")
+
+end
+
+function waypoints_form.show_to(name)
+    minetest.show_formspec(name, "simple_waypoints:waypoints_form", waypoints_form.get_formspec(name))
+end
+
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "simple_waypoints:waypoints_form" then
+        	return
+    	
+	elseif fields.waylist then
+	local event = minetest.explode_textlist_event(fields.waylist)
+		if(event.type == "CHG") then
+			selected_idx = event.index
+		end
+
+	elseif fields.teleport then
+		local pname = player:get_player_name()
+        	if selected_idx == nil then return
+
+		else player:set_pos(minetest.string_to_pos(waypoints[selected_idx].pos))
+			minetest.chat_send_all(pname .. " Teleported to " .. waypoints[selected_idx].name)
+			selected_idx = nil   -- "Teleport" button remembers the last location when you don't select a valid item. This is a reset.
+		end
+	end
+end)
