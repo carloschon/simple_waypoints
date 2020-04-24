@@ -5,7 +5,10 @@
 A minetest 0.4.17+ mod that lets you set waypoints/beacons at current position.
 
 #### How it works
+There's a text interface and a GUI. Use whichever suits you best.
 
+
+TEXT INTERFACE:
 
 - Just use the following commands
 ```
@@ -15,15 +18,15 @@ A minetest 0.4.17+ mod that lets you set waypoints/beacons at current position.
 /wl list your waypoints in table format e.g. "1 Home (x,y,z)".
 ```
 
+GUI:
+/wf to call up the waypoints formspec.
+
+NOTE:
+The GUI allows you to select a beacon color (out of 8); the text interface 
+selects one at random. 
+
+Works with Minetest 5.2.0
 
 #### Installation
 
 Extract zip to the mods folder.
-
-#### TODO
-
--The color of the beacons is chosem randomly on placement; I may tweak this in the future or remove it altogether.
-The HUD element is nice to have, though.
-
--Implement some kind formspec GUI to make the mod easier to use. This will become more practical if and when the engine
-supports custom keybindings.
