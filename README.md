@@ -4,6 +4,8 @@
 
 A minetest 0.4.17+ mod that lets you set waypoints/beacons at current position.
 
+![beacon](img/screenie1.png) ![waypoints GUI](img/screenie2.png)
+
 #### How it works
 There's a text interface and a GUI. Use whichever suits you best.
 
@@ -19,7 +21,7 @@ TEXT INTERFACE:
 ```
 
 GUI:
-/wf to call up the waypoints formspec.
+/wf to bring up the waypoints formspec.
 
 NOTE:
 The GUI allows you to select a beacon color (out of 8); the text interface 
