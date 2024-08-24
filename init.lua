@@ -143,16 +143,28 @@ minetest.register_chatcommand("wc", {
 		local player = minetest.get_player_by_name(name)
 		local p_pos = player:get_pos()
 		local round_pos = vector.round(p_pos)
+
+		-- Check if a waypoint with the given name already exists
 		if waypointExists(waypoints, params) == true then
 			return true, tostring("Waypoint "..params.." already exists.")
 		elseif validCommandArgs(params) then
+			-- Add the new waypoint to the table
 			waypoints[#waypoints+1] = { name = params,
 			pos = minetest.pos_to_string(round_pos) }
+
+			-- Add the waypoint to the player's HUD
 			addWaypointHud(waypoints, player)
+
+			-- Place a beacon at the waypoint location
 			placeBeacon(round_pos)
+
+			-- Save the waypoints to modstorage
 			save()
-		return true, "Waypoint "..params.." created!"
-		else return true, invalidInput
+
+			-- Return success message
+			return true, "Waypoint "..params.." created!"
+		else
+			return true, invalidInput
 		end
 	end
 })
@@ -169,14 +181,26 @@ minetest.register_chatcommand("wd", {
 		if (validCommandArgs(params) == true and type(targetIndex) == "number") then
 			removeBeacon(minetest.string_to_pos(beaconPos))
 			player:hud_remove(waypoints[targetIndex].hudId)
+
+			-- Remove the waypoint from the table
 			table.remove(waypoints, targetIndex)
+
+			-- Now get the correct index for the hud update
+			targetIndex = getIndexByName(waypoints, params)
+
+			-- Update the HUD
+			if targetIndex ~= nil then
+				player:hud_remove(waypoints[targetIndex].hudId)
+			end
+
 			save()
-		return true, "Waypoint deleted."
+			return true, "Waypoint deleted."
 		elseif type(targetIndex) ~= "number" then
-		return false, "Waypoint "..params.." is invalid or inexistent."
+			return false, "Waypoint "..params.." is invalid or inexistent."
 		end
 	end
 })
+
 
 -- LIST WAYPOINTS
 minetest.register_chatcommand("wl", {
@@ -186,6 +210,8 @@ minetest.register_chatcommand("wl", {
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
 		local p_name = player:get_player_name()
+
+		-- Iterate through the waypoints table and send each waypoint's details to the player
 		for k,v in pairs(waypoints) do
 			minetest.chat_send_player(p_name, tostring(k.." "..v.name.." "..v.pos))
 		end
@@ -201,7 +227,10 @@ minetest.register_chatcommand("wt", {
 		local player = minetest.get_player_by_name(name)
 		local p_name = player:get_player_name()
 		local targetPos = getPosByName(waypoints, params)
+
+		-- Check if the waypoint exists and has a valid position
 		if (validCommandArgs(params) == true and type(targetPos) == "string") then
+			-- Teleport the player to the waypoint position
 			player:set_pos(minetest.string_to_pos(targetPos))
 			return true, tostring("Teleported "..p_name.." to "..params..".")
 		elseif type(targetPos) ~= "string" then
@@ -213,6 +242,7 @@ minetest.register_chatcommand("wt", {
 -- SHOW WAYPOINTS FORMSPEC
 minetest.register_chatcommand("wf", {
 	func = function(name)
+		-- Show the waypoints formspec to the player
 		minetest.show_formspec(name, "simple_waypoints:waypoints_formspec", waypoints_formspec.get_main())
 	end,
 })
