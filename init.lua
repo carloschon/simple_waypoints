@@ -13,36 +13,43 @@ local function getIndexByName(table, n)
 	for k,v in pairs(table) do
 		if v.name == n then
 			return k
-		else end
+		end
 	end
+	return nil --Index not found
 end
 
 local function getPosByName(table, n)
 	for k,v in pairs(table) do
 		if v.name == n then
 			return v.pos
-		else end
+		end
 	end
+	return nil -- Position not found
 end
 
 local function waypointExists(table, n)
 	for k,v in pairs(table) do
-		if v.name == n then
-			return true, "Waypoint exists."
-		end
+	  if v.name == n then
+		return "Waypoint exists." 
+	  end
 	end
-end
+	return nil --Waypoint doesn't exist
+  end
 
-local function validCommandArgs(args)
+  local function validCommandArgs(args)
+	invalidChar_err = "Spaces and non-alphanumeric charaters are not supported"
+	charLenght_err = "Name cannot be empty"
 	if type(args) ~= "string" then
-		invalidInput = "We need a string." return false
-	elseif string.match (args, "[%W%s]") ~= nil then
-		invalidInput = "Invalid characters detected." return false
-	elseif string.len (args) == 0 then
-		invalidInput = "Please specify a name." return false
-	else return true
+	  return "Invalid input"
+	elseif string.match(args, "[%W%s]") ~= nil then
+	  return "Invalid input: " .. invalidChar_err
+	elseif string.len(args) == 0 then
+	  return "Invalid input: " .. charLenght_err
+	else
+	  return true
 	end
-end
+  end
+  
 
 local function addWaypointHud(table, player)
 	local wayName = waypoints[#waypoints].name
