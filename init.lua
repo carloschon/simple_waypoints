@@ -150,26 +150,27 @@ minetest.register_chatcommand("wc", {
 		local round_pos = vector.round(p_pos)
 
 		-- Check if a waypoint with the given name already exists
-		if waypointExists(waypoints, params) == true then
-			return true, tostring("Waypoint "..params.." already exists.")
-		elseif validCommandArgs(params) then
-			-- Add the new waypoint to the table
-			waypoints[#waypoints+1] = { name = params,
-			pos = minetest.pos_to_string(round_pos) }
+		if not waypointExists(waypoints, params) == true then
+			-- Validate input
+			if validCommandArgs(params) then	
+				
+				-- Add the new waypoint to the table
+				waypoints[#waypoints+1] = { name = params,
+				pos = minetest.pos_to_string(round_pos) }
 
-			-- Add the waypoint to the player's HUD
-			addWaypointHud(waypoints, player)
+				-- Add the waypoint to the player's HUD
+				addWaypointHud(waypoints, player)
 
-			-- Place a beacon at the waypoint location
-			placeBeacon(round_pos)
+				-- Place a beacon at the waypoint location
+				placeBeacon(round_pos)
 
-			-- Save the waypoints to modstorage
-			save()
+				-- Save the waypoints to modstorage
+				save()
 
-			-- Return success message
-			return true, "Waypoint "..params.." created!"
+				-- Return success message
+				return true, "Waypoint "..params.." created!"
 		else
-			return true, invalidInput
+			return nil, "Waypoint could not be created"
 		end
 	end
 })
