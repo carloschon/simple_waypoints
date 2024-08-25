@@ -37,14 +37,12 @@ local function waypointExists(table, n)
   end
 
   local function validCommandArgs(args)
-	invalidChar_err = "Spaces and non-alphanumeric charaters are not supported"
-	charLenght_err = "Name cannot be empty"
 	if type(args) ~= "string" then
-	  return "Invalid input"
+	  return false, "Invalid input"
 	elseif string.match(args, "[%W%s]") ~= nil then
-	  return "Invalid input: " .. invalidChar_err
+	  return false, "Spaces and non-alphanumeric charaters are not supported"
 	elseif string.len(args) == 0 then
-	  return "Invalid input: " .. charLenght_err
+	  return false, "Name cannot be empty"
 	else
 	  return true
 	end
