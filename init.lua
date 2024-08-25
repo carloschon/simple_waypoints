@@ -169,11 +169,15 @@ minetest.register_chatcommand("wc", {
 
 				-- Return success message
 				return true, "Waypoint "..params.." created!"
+			else
+				return nil, "Waypoint could not be created"
+			end
 		else
 			return nil, "Waypoint could not be created"
 		end
 	end
 })
+
 
 -- DELETE WAYPOINT
 minetest.register_chatcommand("wd", {
