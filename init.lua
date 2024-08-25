@@ -36,19 +36,6 @@ local function waypointExists(table, n)
 	return nil --Waypoint doesn't exist
   end
 
-  local function validCommandArgs(args)
-	if type(args) ~= "string" then
-	  return false, "Invalid input"
-	elseif string.match(args, "[%W%s]") ~= nil then
-	  return false, "Spaces and non-alphanumeric charaters are not supported"
-	elseif string.len(args) == 0 then
-	  return false, "Name cannot be empty"
-	else
-	  return true
-	end
-  end
-  
-
 local function addWaypointHud(table, player)
 	local wayName = waypoints[#waypoints].name
 	local wayPos = minetest.string_to_pos(waypoints[#waypoints].pos)
@@ -149,34 +136,34 @@ minetest.register_chatcommand("wc", {
 		local p_pos = player:get_pos()
 		local round_pos = vector.round(p_pos)
 
+		-- Check if the waypoint name is at least 1 character long
+		if string.len(params) < 1 then
+			return nil, "Waypoint name must be at least 1 character long"
+		end
+
 		-- Check if a waypoint with the given name already exists
 		if not waypointExists(waypoints, params) == true then
-			-- Validate input
-			if validCommandArgs(params) then	
-				
-				-- Add the new waypoint to the table
-				waypoints[#waypoints+1] = { name = params,
-				pos = minetest.pos_to_string(round_pos) }
+			-- Add the new waypoint to the table
+			waypoints[#waypoints+1] = { name = params,
+			pos = minetest.pos_to_string(round_pos) }
 
-				-- Add the waypoint to the player's HUD
-				addWaypointHud(waypoints, player)
+			-- Add the waypoint to the player's HUD
+			addWaypointHud(waypoints, player)
 
-				-- Place a beacon at the waypoint location
-				placeBeacon(round_pos)
+			-- Place a beacon at the waypoint location
+			placeBeacon(round_pos)
 
-				-- Save the waypoints to modstorage
-				save()
+			-- Save the waypoints to modstorage
+			save()
 
-				-- Return success message
-				return true, "Waypoint "..params.." created!"
-			else
-				return nil, "Waypoint could not be created"
-			end
+			-- Return success message
+			return true, "Waypoint "..params.." created!"
 		else
-			return nil, "Waypoint could not be created"
+			return nil, "Waypoint with that name already exists"
 		end
 	end
 })
+
 
 
 -- DELETE WAYPOINT
@@ -188,7 +175,7 @@ minetest.register_chatcommand("wd", {
 		local player = minetest.get_player_by_name(name)
 		local targetIndex = getIndexByName(waypoints, params)
 		local beaconPos = getPosByName(waypoints, params)
-		if (validCommandArgs(params) == true and type(targetIndex) == "number") then
+		if (type(targetIndex) == "number") then
 			removeBeacon(minetest.string_to_pos(beaconPos))
 			player:hud_remove(waypoints[targetIndex].hudId)
 
@@ -239,7 +226,7 @@ minetest.register_chatcommand("wt", {
 		local targetPos = getPosByName(waypoints, params)
 
 		-- Check if the waypoint exists and has a valid position
-		if (validCommandArgs(params) == true and type(targetPos) == "string") then
+		if (type(targetPos) == "string") then
 			-- Teleport the player to the waypoint position
 			player:set_pos(minetest.string_to_pos(targetPos))
 			return true, tostring("Teleported "..p_name.." to "..params..".")
