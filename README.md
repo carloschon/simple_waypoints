@@ -1,8 +1,6 @@
 # Simple Waypoints
 
-------
-
-A minetest 0.4.17+ mod that lets you set waypoints/beacons at current position.
+A minetest 5.2.0+ mod that lets you set waypoints/beacons at current position.
 
 ![beacon](img/screenie1.png) ![waypoints GUI](img/screenie2.png)
 
