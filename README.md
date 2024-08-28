@@ -13,17 +13,16 @@ This mod offers two ways to manage your waypoints: a text-based interface using 
 TEXT INTERFACE:
 
 - Just use the following commands
-```
+
 **Text Commands:**
 
-- **Create Waypoint:** `/wc <waypoint name>`  - Sets a waypoint at your current location with the given name.
-- **Delete Waypoint:** `/wd <waypoint name>` - Removes the waypoint with the specified name.
-- **Teleport to Waypoint:** `/wt <waypoint name>` - Teleports you to the location of the named waypoint.
-- **List Waypoints:** `/wl` - Displays a list of your waypoints in a user-friendly table format, including coordinates (e.g., "1. Home (x,y,z)").
-```
+- **Create Waypoint:** `/wc <waypoint name>`
+- **Delete Waypoint:** `/wd <waypoint name>`
+- **Teleport to Waypoint:** `/wt <waypoint name>`
+- **List Waypoints:** `/wl`
 
 GUI:
-/wf to use GUI instead.
+- **Use menu:** `/wf`
 
 NOTE:
 The GUI allows you to select a beacon color from 8 available options.  When creating waypoints using the chat commands, a random color will be selected for the beacon. 
