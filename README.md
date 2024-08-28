@@ -10,8 +10,6 @@ This mod offers two ways to manage your waypoints: a text-based interface using 
 
 TEXT INTERFACE:
 
-- Just use the following commands
-
 - **Create Waypoint:** `/wc <waypoint name>`
 - **Delete Waypoint:** `/wd <waypoint name>`
 - **Teleport to Waypoint:** `/wt <waypoint name>`
