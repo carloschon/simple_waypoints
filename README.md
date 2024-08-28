@@ -12,8 +12,6 @@ TEXT INTERFACE:
 
 - Just use the following commands
 
-**Text Commands:**
-
 - **Create Waypoint:** `/wc <waypoint name>`
 - **Delete Waypoint:** `/wd <waypoint name>`
 - **Teleport to Waypoint:** `/wt <waypoint name>`
