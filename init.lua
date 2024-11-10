@@ -340,7 +340,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if not waypointExists(waypoints, fields.name) then
 				waypoints[#waypoints+1] = { name = fields.name, pos = minetest.pos_to_string(round_pos) }
 				addWaypointHud(waypoints, player)
-				placeBeacon(round_pos, fields.color)
+				if beacons_enabled then
+					placeBeacon(round_pos, fields.color)
+				end
 				save()
 				minetest.show_formspec(pname, "simple_waypoints:waypoints_formspec", waypoints_formspec.get_main())
 			else minetest.show_formspec(pname, "simple_waypoints:waypoints_formspec", waypoints_formspec.get_exists())
