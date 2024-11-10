@@ -18,8 +18,10 @@ TEXT INTERFACE:
 GUI:
 - **Use menu:** `/wf`
 
-NOTE:
-The GUI allows you to select a beacon color from 8 available options.  When creating waypoints using the chat commands, a random color will be selected for the beacon. 
+NOTE 1:
+The GUI allows you to select a beacon color from 8 available options. When creating waypoints using the chat commands, a random color will be selected for the beacon.
+
+NOTE 2: "teleport" privilege is required.
 
 Works with Minetest 5.2.0+
 
