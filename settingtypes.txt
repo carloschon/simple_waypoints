@@ -1,0 +1,2 @@
+# Enable or disable beacons in the mod
+beacons.enable (Enable Beacons) bool false

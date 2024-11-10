@@ -126,6 +126,9 @@ end
 
 --------------- CHAT COMMANDS -------------------
 
+-- Load beacon setting from settings.conf
+local beacons_enabled = minetest.settings:get_bool("beacons.enable", false)
+
 -- CREATE WAYPOINT
 minetest.register_chatcommand("wc", {
 	params = "<waypoint_name>",
@@ -150,8 +153,10 @@ minetest.register_chatcommand("wc", {
 			-- Add the waypoint to the player's HUD
 			addWaypointHud(waypoints, player)
 
-			-- Place a beacon at the waypoint location
-			placeBeacon(round_pos)
+			-- Check if beacons are enabled before placing a beacon
+			if beacons_enabled then
+				placeBeacon(round_pos)
+			end
 
 			-- Save the waypoints to modstorage
 			save()
@@ -163,7 +168,6 @@ minetest.register_chatcommand("wc", {
 		end
 	end
 })
-
 
 
 -- DELETE WAYPOINT
