@@ -130,7 +130,7 @@ end
 minetest.register_chatcommand("wc", {
 	params = "<waypoint_name>",
 	description = "create a waypoint at current position using a unique name",
-	privs = {shout = true},
+	privs = {teleport = true},
 	func = function (name, params)
 		local player = minetest.get_player_by_name(name)
 		local p_pos = player:get_pos()
@@ -170,7 +170,7 @@ minetest.register_chatcommand("wc", {
 minetest.register_chatcommand("wd", {
 	params = "<waypoint_name>",
 	description = "Delete a waypoint using its name.",
-	privs = {shout = true},
+	privs = {teleport = true},
 	func = function(name,params)
 		local player = minetest.get_player_by_name(name)
 		local targetIndex = getIndexByName(waypoints, params)
@@ -203,7 +203,7 @@ minetest.register_chatcommand("wd", {
 minetest.register_chatcommand("wl", {
 	params = "",
 	description = "Lists your waypoints.",
-	privs = {shout = true},
+	privs = {teleport = true},
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
 		local p_name = player:get_player_name()
@@ -219,7 +219,7 @@ minetest.register_chatcommand("wl", {
 minetest.register_chatcommand("wt", {
 	params = "<waypoint_name>",
 	description = "Teleports you to a specified waypoint.",
-	privs = {shout = true},
+	privs = {teleport = true},
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
 		local p_name = player:get_player_name()
@@ -238,6 +238,8 @@ minetest.register_chatcommand("wt", {
 
 -- SHOW WAYPOINTS FORMSPEC
 minetest.register_chatcommand("wf", {
+	description = "Brings up the GUI.",
+	privs = {teleport = true},
 	func = function(name)
 		-- Show the waypoints formspec to the player
 		minetest.show_formspec(name, "simple_waypoints:waypoints_formspec", waypoints_formspec.get_main())
